@@ -1,0 +1,6 @@
+# Build artifacts — generated from source already in wp-plugin/, don't track
+/*.zip
+/wp-plugin/*.zip
+!/milpa-tech (4).zip
+
+.DS_Store

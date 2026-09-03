@@ -6,6 +6,23 @@ phasing this work follows.
 
 ---
 
+## 2026-09-03 — `milpa-tech-core` deployed to staging
+
+Zipped the plugin (git commit `a722fd7`) and the user uploaded it via
+**Plugins → Add New → Upload Plugin**. First activation attempt hit
+WordPress's fatal-error protection and got auto-deactivated: the two
+Code Snippets entries were still active and declared the same PHP
+function names (`milpa_register_crop_fields()`, etc.) as the plugin,
+so activating it tried to redeclare them. Fix: deactivate the two
+snippets first, then activate the plugin. Original deploy instructions
+had the order backwards — corrected in the plugin's own README.
+
+Verified after activation: shop page still shows the risk badge/funding
+bar/yield on the "Maíz Criollo Orgánico" card, and the homepage hero
+still renders correctly — same output as the snippets, now from
+version-controlled code. The two Code Snippets entries are left in
+place but deactivated (not deleted) as a fallback.
+
 ## 2026-09-02/03 — Foundation, crop schema, first listing, homepage + shop styling
 
 **Context:** Converting the `milpa-tech (4).zip` AI Studio export (React 19

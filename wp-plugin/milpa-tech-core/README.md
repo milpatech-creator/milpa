@@ -22,19 +22,24 @@ display (risk badge / funding bar / yield), and the brand font + styles.
 
 ## Deploying to the site
 
-This plugin isn't installed on the staging site yet — it currently only
-exists here in git. Earlier setup work (the ACF field group, the shop card
-styling, the font) was prototyped directly on the site via the Code
-Snippets plugin so we could see it working immediately; this plugin is the
-version-controlled replacement for those two snippets.
+**Status: installed and active on `milpa.tech/test`** as of 2026-09-03.
+It was first prototyped directly on the site as two Code Snippets entries
+(fastest way to iterate with only wp-admin access); those are now
+deactivated in favor of this plugin.
 
-To deploy:
+Deploy steps, for future updates (e.g. a v0.2.0 zip):
 
 1. Zip the `milpa-tech-core` folder.
-2. In wp-admin: **Plugins → Add New → Upload Plugin**, upload the zip, activate.
-3. Deactivate the two Code Snippets entries ("Milpa Tech: Crop Investment
-   Fields (ACF)" and "Milpa Tech: Brand Fonts + Global Styles") so the same
-   rules aren't registered twice.
+2. **Deactivate first**, if applicable, anything defining the same PHP
+   function names — e.g. the two Code Snippets entries mentioned above.
+   Activating this plugin while they're still active causes a fatal
+   "cannot redeclare function" error, since both sides declare
+   `milpa_register_crop_fields()` etc. in the global namespace. (This bit
+   us once already — see BUILD-LOG.md.)
+3. In wp-admin: **Plugins → Add New → Upload Plugin**, upload the zip.
+   If a previous version is already installed, delete it first (WP won't
+   overwrite an active plugin via upload).
+4. Activate.
 
 Uploading has to be a manual step for now — the assistant driving this repo
 doesn't have file-upload access to the site's browser session. Once the
