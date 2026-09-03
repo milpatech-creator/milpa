@@ -1,0 +1,109 @@
+/*
+ * Milpa Tech brand tokens, pulled from the original React/Tailwind app
+ * (Inter font, slate neutrals, emerald primary, amber/red semantic colors —
+ * see src/index.css and the Tailwind class usage in the AI Studio export).
+ */
+
+:root {
+	--milpa-ink: #020617;
+	--milpa-surface: #0f172a;
+	--milpa-surface-2: #1e293b;
+	--milpa-line: #334155;
+	--milpa-muted: #94a3b8;
+	--milpa-paper: #f8fafc;
+	--milpa-emerald: #059669;
+	--milpa-emerald-2: #10b981;
+	--milpa-amber: #f59e0b;
+	--milpa-red: #dc2626;
+}
+
+/* Front page: the hero built into the page content already carries the
+   title, so suppress the theme's default page-title block there. */
+.page-template-default.page h1.wp-block-post-title,
+body.home .wp-block-post-title {
+	display: none;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+	font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* WooCommerce product grid → investment card look */
+.woocommerce ul.products li.product {
+	background: #fff;
+	border: 1px solid #e2e8f0;
+	border-radius: 14px;
+	padding: 18px;
+	box-shadow: 0 1px 2px rgba(2, 6, 23, .04);
+	transition: box-shadow .15s ease, transform .15s ease;
+}
+.woocommerce ul.products li.product:hover {
+	box-shadow: 0 8px 24px -8px rgba(2, 6, 23, .15);
+	transform: translateY(-2px);
+}
+.woocommerce ul.products li.product img {
+	border-radius: 10px;
+}
+.woocommerce ul.products li.product .price {
+	color: var(--milpa-emerald);
+	font-weight: 700;
+}
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce #respond input#submit,
+.woocommerce input.button {
+	background: var(--milpa-emerald) !important;
+	color: #fff !important;
+	border-radius: 8px !important;
+	border: none !important;
+	font-weight: 600 !important;
+}
+.woocommerce a.button:hover,
+.woocommerce button.button:hover {
+	background: var(--milpa-emerald-2) !important;
+}
+
+/* Risk badge + funding progress bar, injected by shop-display.php */
+.milpa-risk-badge {
+	display: inline-block;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+	padding: 3px 9px;
+	border-radius: 20px;
+	margin-bottom: 8px;
+}
+.milpa-risk-BAJO { background: #d1fae5; color: #065f46; }
+.milpa-risk-MEDIO { background: #fef3c7; color: #92400e; }
+.milpa-risk-ALTO { background: #fee2e2; color: #991b1b; }
+
+.milpa-fund-bar {
+	height: 6px;
+	border-radius: 4px;
+	background: #e2e8f0;
+	overflow: hidden;
+	margin: 8px 0 4px;
+}
+.milpa-fund-bar-fill {
+	height: 100%;
+	background: linear-gradient(90deg, var(--milpa-emerald), var(--milpa-emerald-2));
+}
+.milpa-fund-label {
+	font-size: 12px;
+	color: #64748b;
+	display: flex;
+	justify-content: space-between;
+}
+.milpa-yield {
+	font-size: 12.5px;
+	color: #0f172a;
+	margin-top: 6px;
+}
+.milpa-yield b {
+	color: var(--milpa-emerald);
+}
