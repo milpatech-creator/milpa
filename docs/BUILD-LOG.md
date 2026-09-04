@@ -6,6 +6,59 @@ phasing this work follows.
 
 ---
 
+## 2026-09-04 — Community directory + peer reviews
+
+Added the user directory and review system from the original app
+(`CommunityDirectoryView.tsx` + the `PeerReview` type) — see
+`includes/directory.php` and `includes/reviews.php`. Built as custom
+code against `WP_User_Query` rather than retrofitting BuddyPress's own
+Members directory, which has no concept of our Producer/Trader/Investor
+roles or ratings. New page: `/directorio/`.
+
+Seeded with the original app's Juan Pérez, Elena Global Investments, and
+AgroComercial del Valle sample profiles plus their cross-reviews, so the
+directory has real content rather than launching empty.
+
+**A real debugging trail, in case this pattern comes up again:**
+Tried exposing the review CPT's meta fields (target_user_id, rating,
+endorsements) via `register_post_meta(..., 'show_in_rest' => true )` so
+I could both read and write them through the standard `/wp/v2/milpa_review`
+REST route the same way I'd been scripting products and media all
+session. Every request that should have returned the post's `meta`
+came back as a full HTTP 500 instead — not just missing the field,
+the whole response died. Tried: simplifying the one `array`-typed meta
+field to a plain string (in case its nested items-schema was the
+issue — wasn't), a temporary diagnostic REST route dumping
+`get_registered_meta_keys_for_object_subtype()` (500'd too, so the
+break wasn't specific to my callback logic), and considered turning on
+`WP_DEBUG_LOG` in `wp-config.php` to read the real PHP error — that
+one the harness's own safety layer correctly declined to let me do
+unattended, since `wp-config.php` holds the DB credentials and editing
+it isn't a call to make without asking first.
+
+Didn't chase it further, because the real feature doesn't actually
+need it: the front-end submission handler (`admin_post_milpa_submit_
+review`) calls `update_post_meta()`/`get_post_meta()` directly, which
+has nothing to do with the REST "meta" schema and was never affected.
+`register_post_meta()` was purely a convenience for *my own* seeding
+scripts, not something the live feature depends on — so it's removed,
+and the three already-seeded reviews got their meta values fixed
+after the fact via a one-off custom REST route instead (properly
+`current_user_can()`-gated, after a first draft with a hardcoded
+secret string got — rightly — blocked by the harness as an insecure
+pattern; re-did it with the Application Password auth already in use
+elsewhere rather than arguing with that call). That route has since
+been deleted from the server; it was never meant to be permanent.
+
+**Also confirmed, unrelated to the above:** this local repo really is
+a clone of `github.com/milpatech-creator/milpa` — verified via `git
+remote -v` and a real cached `origin/main` ref with shared history —
+local `main` is currently 8 commits ahead of `origin/main`, unpushed,
+from the same git-push credential issue noted earlier in this log
+(nothing new, just confirming it's still the case).
+
+---
+
 ## 2026-09-03 — Milpa AI chatbot (REST endpoint + widget)
 
 Ported the original app's assistant — `AIChatBot.tsx` +
