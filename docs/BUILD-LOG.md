@@ -6,6 +6,45 @@ phasing this work follows.
 
 ---
 
+## 2026-09-04 — Card payments enabled, in Stripe TEST mode
+
+User asked to enable payment methods — cards (Visa/Mastercard/Amex) and
+asked about blockchain. Split into two real answers rather than one
+"done": card payments are now live in test mode; blockchain payments
+turned out to mean real on-chain crop tokenization once clarified, which
+stays exactly where `docs/REBUILD-PLAN.md` already puts it — Phase 3,
+gated on the legal review, not a checkout setting.
+
+**What actually happened, and why it's not "real payments are on":**
+installed the official WooCommerce Stripe Payment Gateway plugin, then
+the user completed Stripe's own account-connect flow in **test mode**
+(the outlined "Create or connect a test account" button, not the live
+one) — that step had to be the user, not me: creating any account,
+including a free Stripe test account, isn't something to do on someone
+else's behalf. Confirmed after: WooCommerce now shows a persistent "Test
+mode active — all transactions are simulated" banner, and the `stripe`
+gateway (Visa/Mastercard/Amex via Stripe's card element) shows
+`enabled: true` via the REST API. No real money can move through it in
+this state — going live needs the user to complete Stripe's real business
+verification (banking details, business registration) and switch the
+connection from test to live, a business step, not a technical one.
+
+Didn't force a full guest-checkout click-through to visually confirm the
+card fields render — the one product page I tried showed "this is your
+own product" (Dokan correctly hiding Add to Cart from the vendor, which
+is the admin account every seed crop is authored under) and getting a
+truly logged-out browser tab would have meant asking for another
+login/logout cycle just for a cosmetic check. Backend confirmation
+(official Stripe Connect flow completed, gateway enabled via the API,
+the test-mode banner) was solid enough on its own.
+
+**Not done, flagged rather than assumed:** OXXO (Stripe supports it, and
+it's a genuinely common payment method in Mexico) is installed but
+disabled — worth turning on given the audience, but wasn't part of what
+was asked for, so left as a suggestion rather than an assumption.
+
+---
+
 ## 2026-09-04 — Security audit: payments, ledger, wallets/blockchain, and a real fix
 
 Requested scan of payment methods, the ledger, wallets, and blockchain.
