@@ -6,6 +6,26 @@ phasing this work follows.
 
 ---
 
+## 2026-09-03 — Producer/Trader/Investor public signup
+
+Public registration now assigns the right role — previously the three
+roles existed (see the earlier entry below) but only an admin could
+assign them via Users → Add User. Built on Dokan's existing customer/
+vendor picker on the native WooCommerce registration form rather than a
+separate signup page: see `includes/registration.php` for how the
+Producer/Trader sub-choice is injected and how the role gets layered on
+top of Dokan's own (so store pages, vendor dashboard, etc. all keep
+working — those key off the literal "seller" role, so producer/trader
+users now hold both roles at once, same idea for investor + customer).
+
+Verified live end-to-end: registered a real account through the public
+form as a Trader, confirmed via REST API it landed with
+`roles: ['seller', 'trader']`, deleted the test account after.
+
+Deployed via FTP as usual, `MILPA_CORE_VERSION` bumped to 0.4.0.
+
+---
+
 ## 2026-09-03 — Remaining 3 crop listings + real product images
 
 Created the other three crops from the original export's `initialCrops`
