@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Milpa Tech Core
  * Description: Custom functionality for the Milpa Tech WordPress rebuild — crop investment data schema, marketplace card display, and brand assets. Requires WooCommerce and Advanced Custom Fields; Dokan recommended.
- * Version: 0.7.0
+ * Version: 0.7.1
  * Author: Milpa Tech
  * Text Domain: milpa-tech-core
  *
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'MILPA_CORE_VERSION', '0.7.0' );
+define( 'MILPA_CORE_VERSION', '0.7.1' );
 define( 'MILPA_CORE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'MILPA_CORE_URL', plugin_dir_url( __FILE__ ) );
 
@@ -29,3 +29,4 @@ require_once MILPA_CORE_PATH . 'includes/ai-chatbot.php';
 require_once MILPA_CORE_PATH . 'includes/reviews.php';
 require_once MILPA_CORE_PATH . 'includes/directory.php';
 require_once MILPA_CORE_PATH . 'includes/portfolio.php';
+require_once MILPA_CORE_PATH . 'includes/security-hardening.php';

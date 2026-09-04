@@ -6,6 +6,90 @@ phasing this work follows.
 
 ---
 
+## 2026-09-04 — Security audit: payments, ledger, wallets/blockchain, and a real fix
+
+Requested scan of payment methods, the ledger, wallets, and blockchain.
+Results below, grouped by what was actually found — this was a real scan
+against the live site (curl, the REST API, and reading the plugin source),
+not a checklist review.
+
+### Fixed: anonymous REST API user-enumeration leak (real issue, not ours to begin with)
+
+`GET /wp-json/wp/v2/users` with **no authentication at all** was
+returning, for every user: `is_super_admin` (telling any anonymous
+caller exactly which account — `admin`, id 1 — is the highest-value
+credential-attack target), the full `meta` object, `woocommerce_meta`
+(internal admin UI state), and `dokan_meta` (vendor_id). None of that is
+core WordPress's default anonymous response, which is limited to
+id/name/url/description/link/slug/avatar_urls — something in the Dokan/
+WooCommerce stack broadened the schema without gating it to
+authenticated requests. Didn't chase down which plugin specifically
+(would need a bisect to be sure); instead added a `rest_prepare_user`
+filter in the new `includes/security-hardening.php` that strips those
+fields for anyone without `list_users`, regardless of which plugin
+re-introduces them later. Verified: anonymous requests now get only the
+safe fields, authenticated admin requests are unaffected. Deployed as
+`0.7.1`.
+
+### Confirmed safe / not yet a live risk
+
+- **Payments**: zero payment gateways are enabled (checked via
+  `/wc/v3/payment_gateways` — bacs/cheque/cod all present but disabled,
+  nothing else installed). There is currently no real payment processing
+  surface to secure, which is correct for where the build is — matches
+  Phase 0/1 in `docs/REBUILD-PLAN.md`. Nothing to fix; flagging that this
+  audit will need re-running once a real gateway goes live in Phase 2.
+- **Wallets / blockchain**: no wallet or on-chain integration exists yet
+  (also correctly gated to Phase 3). Nothing to scan.
+- **The ledger** (`includes/portfolio.php`): scoped strictly to
+  `get_current_user_id()`, no user-supplied ID parameter anywhere in that
+  code path — no way for one account to view another's holdings or order
+  history through it.
+- **WooCommerce order/customer/settings REST routes**: correctly return
+  401 without authentication — only the core users route had the gap.
+- **HTTPS**: HTTP requests 301-redirect to HTTPS correctly.
+- **wp-config.php**: directly requesting it returns an empty 200 body —
+  PHP is executing it (as it should), not serving raw source. No DB
+  credential leak. (Worth a direct check any time a host migration or
+  server config change happens — this is the kind of thing that silently
+  breaks.)
+- **Custom plugin code** (registration.php, reviews.php, directory.php,
+  roles.php): every `$_POST`/`$_GET` read is sanitized
+  (`absint`/`sanitize_key`/`sanitize_text_field`/`sanitize_textarea_
+  field`) or capability-gated (`current_user_can`). The review
+  submission form has a real nonce (`check_admin_referer` +
+  `wp_nonce_field`); the profile-field savers ride WordPress core's own
+  nonce-verified `edit_user_profile_update`/`personal_options_update`
+  hooks rather than needing their own. No author/reviewer-identity
+  spoofing possible — `get_current_user_id()` is server-side truth, never
+  taken from POST data.
+- **Git history**: `git log -p --all`, grepped for every credential
+  used this session (FTP password, WC API key/secret, Application
+  Password, the one throwaway user password) — clean, nothing ever
+  committed.
+- **xmlrpc.php**: responds 405 to a plain GET (not disabled outright,
+  but not trivially abusable either — low priority).
+
+### Lower-priority, worth knowing about
+
+- `GET /wp-json/wp/v2/milpa_review` is publicly listable and returns raw
+  `title` values like "Review of #3 by #5" (real user IDs, just not
+  labeled as anything sensitive). The review *content* itself is already
+  meant to be public — it's shown openly on directory profile pages — so
+  this isn't new exposure, just an unstyled, unintended way to bulk-fetch
+  it outside the normal directory UI. Not fixed; flagging rather than
+  spending the time, since nothing behind it is actually private.
+- No rate-limiting or spam protection on either the review-submission
+  form or the AI chatbot's REST endpoint. Not a leak, but worth adding
+  before real public traffic — e.g. Loginizer or a lightweight custom
+  throttle on `admin_post_milpa_submit_review` and `/milpa/v1/chat`.
+- Loginizer's brute-force protection is active (confirmed earlier this
+  build), but whether the **Pro** tier includes real 2FA was flagged as
+  unverified back when the rebuild plan was written and still hasn't
+  been checked.
+
+---
+
 ## 2026-09-04 — Investor portfolio + real transaction ledger
 
 Found the actual gap on the buyer side: Dokan's `[dokan-dashboard]`
