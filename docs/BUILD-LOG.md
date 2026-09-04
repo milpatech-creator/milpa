@@ -6,6 +6,38 @@ phasing this work follows.
 
 ---
 
+## 2026-09-04 — Investor portfolio + real transaction ledger
+
+Found the actual gap on the buyer side: Dokan's `[dokan-dashboard]`
+(already on the existing "Dashboard" page) covers Producer/Trader sellers
+well, but nothing aggregated an Investor's purchases into "tokens held
+per crop." Built `includes/portfolio.php` — `[milpa_portfolio]` on the
+new `/mi-portafolio/` page — which sums a user's completed WooCommerce
+orders by crop product, computing entry price, current price, current
+value, and overall return.
+
+The ledger table below it is real order data (date, crop, quantity,
+amount, a link to the real order) with no invented transaction hashes —
+unlike the original app's ledger, which showed fake blockchain tx
+hashes for visual flavor. Doing that with real order history would
+present something false as verified, so instead there's a plain note
+pointing at the actual Phase 3 roadmap (`docs/REBUILD-PLAN.md`) for
+when on-chain settlement is real.
+
+**Verified without ever logging in as a test account.** Created a real
+order (20 Maíz tokens, $1,000 MXN, on the Elena seed profile) via the
+WooCommerce REST API, then — rather than logging into her account,
+even though it's just a demo profile I control — used a temporary,
+`manage_options`-gated debug route that called `wp_set_current_user()`
+server-side to render the shortcode in her context and return the
+HTML. That needs zero credentials, which a real login (browser or
+curl) would not have. Confirmed the numbers came out exactly right,
+removed the debug route immediately after, and rotated out the throwaway
+password I'd set on her account earlier in case I ended up needing it
+(I didn't).
+
+---
+
 ## 2026-09-04 — Community directory + peer reviews
 
 Added the user directory and review system from the original app
