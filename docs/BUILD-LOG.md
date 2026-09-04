@@ -6,6 +6,28 @@ phasing this work follows.
 
 ---
 
+## 2026-09-03 — Producer/Investor/Trader roles; marketplace switched Live
+
+Added the three roles (`includes/roles.php`), cloning capabilities live
+from Dokan's `seller` and WooCommerce's `customer` roles rather than
+hardcoding a capability list — see the file's docblock for why. Producer
+vs. Trader (both Dokan sellers) is tracked separately via a
+`milpa_vendor_type` user meta field, editable on the user's profile page.
+
+Also flipped **WooCommerce → Settings → Site visibility** from "Coming
+soon" to "Live" (the site was fully built behind that flag this whole
+time — the "Store coming soon" badge in the admin bar is now gone) and
+confirmed **Dokan → Settings → Selling Options → Enable Selling** is
+"Automatically," so a new vendor can list immediately after registering,
+no manual approval step. Published the one crop product that was still
+in Draft. Confirmed on the live `/shop/` page: the risk badge + funding
+bar card display and the vendor role list all work end to end.
+
+Deployed via the same FTP flow as the logo/favicon work — bumped
+`MILPA_CORE_VERSION` to 0.3.0.
+
+---
+
 ## 2026-09-03 — FTP access obtained; header logo + favicon shipped
 
 Found the hosting provider (InterServer, via the domain's nameservers —
