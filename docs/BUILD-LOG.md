@@ -6,7 +6,46 @@ phasing this work follows.
 
 ---
 
-## 2026-09-03 — `milpa-tech-core` deployed to staging
+## 2026-09-03 — FTP access obtained; header logo + favicon shipped
+
+Found the hosting provider (InterServer, via the domain's nameservers —
+GoDaddy is only the registrar) and got FTP credentials for the account
+`milpatec` on host `milpa.tech`. Confirmed via `curl ftp://...` that this
+account has full read/write access to `public_html/test/` (the staging
+site) — **and also to `public_html/` directly, which is a separate,
+already-installed production WordPress site we have not touched.**
+Everything from here on stays scoped to `public_html/test/`.
+
+This unblocks the two things manual wp-admin access couldn't do:
+
+1. **Direct plugin deploys.** No more zip-and-upload-through-wp-admin —
+   changed files now go straight to `wp-content/plugins/milpa-tech-core/`
+   via `curl -T`. Deploy steps updated in the plugin's own README.
+2. **The site logo + favicon**, previously blocked entirely (no way to
+   get an image file onto the server without file-upload access). Added
+   `includes/branding.php`: injects the corn/circuit mark from the
+   original export (`assets/img/milpa-mark.svg`, copied as-is from
+   `public/milpa_tech_logo_transparent.svg`) next to the site title via a
+   small `wp_footer` script, and sets it as an SVG favicon via `wp_head`.
+   Done this way — rather than through the Customizer's Site Icon/Logo
+   pickers — because those still require a Media Library upload, which is
+   a different admin screen than the FTP access we now have; this was
+   the faster, equally valid path for a block theme with no classic
+   `header.php` to edit.
+
+One snag: after the first FTP deploy, the logo showed up but rendered
+huge — the browser was serving a cached copy of `milpa-brand.css` from
+its exact previous URL (`?ver=0.1.0`, unchanged). Fix: bump
+`MILPA_CORE_VERSION` on any CSS/JS-touching deploy, not just PHP-logic
+changes — it's what busts the cache. Confirmed fixed after bumping to
+`0.2.0` and reloading.
+
+**Credential handling:** the FTP password was shared in chat, used
+directly in local `curl` commands, and is not written into any file in
+this repo (check `.gitignore` / grep before committing if that ever
+seems necessary — it shouldn't).
+
+## `milpa-tech-core` deployed to staging (earlier same day)
 
 Zipped the plugin (git commit `a722fd7`) and the user uploaded it via
 **Plugins → Add New → Upload Plugin**. First activation attempt hit

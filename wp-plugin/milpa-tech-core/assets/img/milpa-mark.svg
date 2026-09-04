@@ -1,0 +1,43 @@
+<svg viewBox="0 0 500 550" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="milpaCobGrad" x1="250" y1="50" x2="250" y2="350" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#4ADE80" />
+      <stop offset="50%" stopColor="#22C55E" />
+      <stop offset="100%" stopColor="#06B6D4" />
+    </linearGradient>
+    <linearGradient id="milpaHuskGrad" x1="100" y1="150" x2="400" y2="450" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#16A34A" />
+      <stop offset="100%" stopColor="#0D9488" />
+    </linearGradient>
+  </defs>
+
+  <path d="M 170 120 C 120 180 110 280 190 380 C 230 430 250 480 250 510 C 250 480 270 430 310 380 C 390 280 380 180 330 120 C 310 200 270 300 250 360 C 230 300 190 200 170 120 Z" fill="url(#milpaHuskGrad)" stroke="#22C55E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 150 110 C 110 180 90 250 120 330 C 135 370 160 410 200 450" fill="none" stroke="#10B981" stroke-width="8" stroke-linecap="round" />
+  <path d="M 350 110 C 390 180 410 250 380 330 C 365 370 340 410 300 450" fill="none" stroke="#10B981" stroke-width="8" stroke-linecap="round" />
+
+  <g stroke="#14B8A6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M 120 330 L 80 330 L 50 370 L 50 420 L 100 420" />
+    <path d="M 135 370 L 100 370 L 70 410 L 70 470 L 130 470" />
+    <path d="M 160 410 L 120 410 L 100 450 L 100 500 L 160 500" />
+    <path d="M 380 330 L 420 330 L 450 370 L 450 420 L 400 420" />
+    <path d="M 365 370 L 400 370 L 430 410 L 430 470 L 370 470" />
+    <path d="M 340 410 L 380 410 L 400 450 L 400 500 L 340 500" />
+    <path d="M 230 480 L 230 520" />
+    <path d="M 250 490 L 250 530" />
+    <path d="M 270 480 L 270 520" />
+  </g>
+
+  <g fill="#38BDF8">
+    <circle cx="50" cy="420" r="7" /><circle cx="100" cy="420" r="7" /><circle cx="70" cy="470" r="7" /><circle cx="130" cy="470" r="7" /><circle cx="100" cy="500" r="7" /><circle cx="160" cy="500" r="7" />
+    <circle cx="450" cy="420" r="7" /><circle cx="400" cy="420" r="7" /><circle cx="430" cy="470" r="7" /><circle cx="370" cy="470" r="7" /><circle cx="400" cy="500" r="7" /><circle cx="340" cy="500" r="7" />
+    <circle cx="230" cy="520" r="7" /><circle cx="250" cy="530" r="7" /><circle cx="270" cy="520" r="7" />
+  </g>
+
+  <g>
+    <circle cx="250" cy="50" r="5" fill="#4ADE80"/><circle cx="235" cy="75" r="5" fill="#4ADE80"/><circle cx="250" cy="75" r="5" fill="#4ADE80"/><circle cx="265" cy="75" r="5" fill="#4ADE80"/>
+    <circle cx="220" cy="100" r="5" fill="#22C55E"/><circle cx="235" cy="100" r="5" fill="#22C55E"/><circle cx="250" cy="100" r="5" fill="#22C55E"/><circle cx="265" cy="100" r="5" fill="#22C55E"/><circle cx="280" cy="100" r="5" fill="#22C55E"/>
+    <circle cx="205" cy="125" r="5" fill="#22C55E"/><circle cx="220" cy="125" r="5" fill="#22C55E"/><circle cx="235" cy="125" r="5" fill="#22C55E"/><circle cx="250" cy="125" r="5" fill="#22C55E"/><circle cx="265" cy="125" r="5" fill="#22C55E"/><circle cx="280" cy="125" r="5" fill="#22C55E"/><circle cx="295" cy="125" r="5" fill="#22C55E"/>
+    <circle cx="195" cy="150" r="5" fill="#10B981"/><circle cx="225" cy="150" r="5" fill="#10B981"/><circle cx="255" cy="150" r="5" fill="#10B981"/><circle cx="285" cy="150" r="5" fill="#10B981"/>
+    <circle cx="230" cy="250" r="6" fill="#38BDF8"/><circle cx="250" cy="265" r="6" fill="#38BDF8"/><circle cx="280" cy="210" r="6" fill="#38BDF8"/>
+  </g>
+</svg>

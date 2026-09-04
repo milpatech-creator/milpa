@@ -32,6 +32,18 @@ textarea {
 	font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
+/* Header logo mark, injected by branding.php next to the site title */
+.wp-block-site-title a {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+}
+.milpa-mark {
+	width: 28px;
+	height: 30px;
+	display: inline-block;
+}
+
 /* WooCommerce product grid → investment card look */
 .woocommerce ul.products li.product {
 	background: #fff;
