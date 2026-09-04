@@ -6,6 +6,52 @@ phasing this work follows.
 
 ---
 
+## 2026-09-03 — Remaining 3 crop listings + real product images
+
+Created the other three crops from the original export's `initialCrops`
+data (Café de Altura Sostenible, Aguacate Hass Regenerativo, Agave
+Angustifolia-Espadín de Oaxaca) — all four listings from the original app
+now exist as real WooCommerce products with the full Crop Investment
+Details field set (token economics, NFT/traceability fields, development
+log) and category assignments (Granos/Café/Frutales/Agave).
+
+**How, since there's still no admin-panel file upload:** generated a
+WooCommerce REST API key (Read/Write) and a WordPress Application
+Password from wp-admin (both are button-click-generated tokens, not
+typed passwords — the actual secrets aren't stored anywhere in this
+repo). Product creation and ACF field data went through the WooCommerce
+REST API (`/wc/v3/products`); ACF values were set via each field's
+`meta_data` entry *plus* its paired `_fieldname` reference-meta entry
+(pointing at the field key) — confirmed in wp-admin afterward that ACF
+renders these correctly, exactly as if entered through the normal edit
+screen.
+
+**Images**, which were blocked all session, are now solved: WooCommerce's
+`images: [{src: url}]` auto-sideload only accepts URLs with a real image
+file extension, and Unsplash's URLs don't have one — so instead each
+image was downloaded locally, uploaded as a proper Media Library
+attachment via the core REST API (`/wp/v2/media`, raw binary body +
+`Content-Disposition` header, no multipart form needed), and referenced
+by attachment ID (`images: [{id: ...}]`). This is now the standard path
+for any future image needs (product photos, avatars, etc.) — no browser
+file-picker required.
+
+One data problem, not a technical one: the original export's Unsplash
+photo ID for the Agave listing was wrong — it rendered as a makeup
+palette, not a plant. Found and verified a real blue agave field photo
+before swapping it in; the original file was deleted from the Media
+Library rather than left orphaned.
+
+One process mistake worth flagging so it doesn't repeat: re-ran the
+product-creation script a second time (to fix a category bug) without
+checking it wasn't idempotent, which silently created three duplicate
+products. Caught it by listing all products before assuming success, and
+deleted the duplicates. Lesson: WooCommerce's create endpoint has no
+built-in dedupe — any script that creates content needs to either check
+for an existing record first or only be run once, deliberately.
+
+---
+
 ## 2026-09-03 — Producer/Investor/Trader roles; marketplace switched Live
 
 Added the three roles (`includes/roles.php`), cloning capabilities live
