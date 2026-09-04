@@ -6,6 +6,45 @@ phasing this work follows.
 
 ---
 
+## 2026-09-03 — Milpa AI chatbot (REST endpoint + widget)
+
+Ported the original app's assistant — `AIChatBot.tsx` +
+`server/geminiService.ts` — as a REST route (`POST /wp-json/milpa/v1/chat`)
+plus a small vanilla-JS floating widget, bottom-right (Deskuss's own
+support bubble already owns bottom-left).
+
+Same three-tier strategy as the original: Gemini with search grounding,
+Gemini without grounding, then a scripted fallback. Only the fallback
+tier is live right now — the Gemini tiers are fully wired but inert
+until `MILPA_GEMINI_API_KEY` is defined in `wp-config.php`, which
+nobody's provided yet. The fallback text is ported close to verbatim
+from the original per-crop replies, so it's a genuinely useful assistant
+on its own, not a placeholder. Verified all the keyword-routing paths
+(agave, café, maíz, aguacate, price queries, "how do I invest", generic)
+in both languages via `curl` against the live REST endpoint before
+touching the browser at all.
+
+The system prompt's crop context now comes from `wc_get_products()` +
+ACF's `get_field()` — i.e. the real live listings — rather than a second
+hardcoded copy of the same four crops the original TS array had.
+
+**Bug caught before it shipped:** the widget initially rendered *open*
+by default on page load, when it's supposed to start collapsed. Cause:
+`#milpa-chat-panel { display: flex; }` in the CSS has higher specificity
+than the browser's built-in `[hidden] { display: none }` rule, so my own
+style was winning and silently canceling the `hidden` attribute's
+effect. Fix: an explicit `#milpa-chat-panel[hidden] { display: none; }`
+rule, which has higher specificity than either. Caught by checking a
+*fresh* browser tab rather than trusting the tab I'd already been
+clicking around in — the first tab's state wasn't a reliable read, since
+by then I could no longer tell whether "open" reflected the page's real
+default or just something my own testing had already clicked.
+
+Deployed via FTP, `MILPA_CORE_VERSION` bumped to 0.5.0 then 0.5.1 for
+the fix.
+
+---
+
 ## 2026-09-03 — Producer/Trader/Investor public signup
 
 Public registration now assigns the right role — previously the three
